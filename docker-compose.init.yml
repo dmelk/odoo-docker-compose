@@ -1,6 +1,6 @@
 services:
   nginx:
     volumes:
-      - ./nginx/nginx_no_ssl.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx_no_ssl.template.conf:/etc/nginx/templates/default.conf.template
       - ./volumes/certbot/letsencrypt:/etc/letsencrypt
       - ./volumes/certbot/www:/var/www/letsencrypt
