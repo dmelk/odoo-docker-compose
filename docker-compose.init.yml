@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  nginx:
+    volumes:
+      - ./nginx/nginx_no_ssl.conf:/etc/nginx/conf.d
+      - ./data/certbot/letsencrypt:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/letsencrypt

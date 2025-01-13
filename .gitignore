@@ -1,0 +1,4 @@
+.env
+.idea
+voluems/*
+odoo/addons/*

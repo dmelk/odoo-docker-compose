@@ -1,0 +1,57 @@
+version: "3.9"
+services:
+  postgress:
+    image: postgres:15
+    name: odoo.db
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./volumes/postgress:/var/lib/postgresql/data/pgdata
+
+  odooapp:
+    image: odoo:16.0
+    name: odoo.app
+    depends_on:
+      - postgress
+    volumes:
+      - ./volumes/odooapp:/var/lib/odoo
+      - ./odoo/config:/etc/odoo
+      - ./odoo/addons:/mnt/extra-addons
+    environment:
+      - PASSWORD=${DB_PASSWORD}
+      - HOST=postgress
+    secrets:
+      - postgresql_password
+
+  nginx:
+    image: nginx
+    container_name: odoo.nginx
+    depends_on:
+      - odooapp
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d:ro
+      - ./volumes/certbot/letsencrypt:/etc/letsencrypt
+      - ./volumes/certbot/www:/var/www/letsencrypt
+
+  certbot:
+    image: nbraun1/certbot
+    container_name: odoo.certbot
+    depends_on:
+      - nginx
+    environment:
+      EMAIL: ${OWNER_EMAIL}
+      DOMAINS: ${DOMAIN_NAME}
+      AUTHENTICATOR: webroot
+      WEBROOT_PATH: /var/www/letsencrypt
+      POST_HOOK_CMD: docker kill -s HUP $$(docker ps --filter "name=odoo.nginx" | awk '{print $$1}')
+      CRON: "* * * * *"
+    volumes:
+      - ./volumes/certbot/letsencrypt:/etc/letsencrypt
+      - ./volumes/certbot/www:/var/www/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock
