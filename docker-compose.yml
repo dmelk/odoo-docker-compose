@@ -1,5 +1,5 @@
 services:
-  postgress:
+  postgres:
     image: postgres:15
     container_name: odoo.db
     environment:
@@ -14,14 +14,14 @@ services:
     image: odoo:16.0
     container_name: odoo.app
     depends_on:
-      - postgress
+      - postgres
     volumes:
       - ./volumes/odooapp:/var/lib/odoo
       - ./odoo/config:/etc/odoo
       - ./odoo/addons:/mnt/extra-addons
     environment:
       - PASSWORD=${DB_PASSWORD}
-      - HOST=postgress
+      - HOST=postgres
 
   nginx:
     image: nginx
