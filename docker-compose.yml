@@ -23,8 +23,6 @@ services:
     environment:
       - PASSWORD=${DB_PASSWORD}
       - HOST=postgress
-    secrets:
-      - postgresql_password
 
   nginx:
     image: nginx

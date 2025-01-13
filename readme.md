@@ -20,12 +20,11 @@ For the fist usage you should start nginx server in http only mode and then obta
 To do so you need to start your whole app using next command
 
 ```bash
-docker compose up -d -f docker-compose.yml -f docker-compose.init.yml 
+docker compose -f docker-compose.yml -f docker-compose.init.yml up -d certbot
 ```
 
-Next after everything is up and running, and you got SSL certificate you can simply restart 
-nginx service:
+Next after everything is up and running, and you got SSL certificate you can simply start whole app again:
 
 ```bash
-docker compose restart nginx
+docker compose up -d
 ```
