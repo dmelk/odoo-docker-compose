@@ -28,3 +28,12 @@ Next after everything is up and running, and you got SSL certificate you can sim
 ```bash
 docker compose restart nginx
 ```
+
+## Troubleshooting
+
+Odoo app container is running not by root user, so you should provide proper rights for the odoo
+directory in the volume. To do so you can run next command:
+
+```bash
+chmod -R 777 volumes/odooapp/
+```
