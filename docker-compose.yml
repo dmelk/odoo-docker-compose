@@ -2,7 +2,7 @@ version: "3.9"
 services:
   postgress:
     image: postgres:15
-    name: odoo.db
+    container_name: odoo.db
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -13,7 +13,7 @@ services:
 
   odooapp:
     image: odoo:16.0
-    name: odoo.app
+    container_name: odoo.app
     depends_on:
       - postgress
     volumes:
