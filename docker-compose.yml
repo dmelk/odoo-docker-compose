@@ -45,7 +45,7 @@ services:
       - nginx
     environment:
       EMAIL: ${OWNER_EMAIL}
-      DOMAINS: ${DOMAIN_NAME},${MAIL_DOMAIN_NAME}
+      DOMAINS: ${DOMAIN_NAME}
       AUTHENTICATOR: webroot
       WEBROOT_PATH: /var/www/letsencrypt
       POST_HOOK_CMD: docker kill -s HUP $$(docker ps --filter "name=odoo.nginx" | awk '{print $$1}')
